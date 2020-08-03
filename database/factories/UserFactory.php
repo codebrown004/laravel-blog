@@ -28,7 +28,9 @@ $factory->define(User::class, function (Faker $faker) {
 
 $factory->define('App\Post', function (Faker $faker) {
     return [
-        'user_id' => 1,
+        'user_id' => function(){
+        	return factory('App\User')->create()->id;
+        },
         'title' => $faker->sentence,
         'body' => $faker->paragraph,
     ];

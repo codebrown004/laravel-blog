@@ -7,7 +7,7 @@
               <div class="col-lg-6">
                 <ul class="list-unstyled mb-0">
                   @foreach($archives as $arch)
-                    <li><a href="/?month={{$arch->month}}&year={{$arch->year}}">{{$arch->month .' '.$arch->year }}</a></li>
+                    <li><a href="/?month={{$arch['month']}}&year={{$arch['year']}}">{{$arch['month'] .' '.$arch['year'] }}</a></li>
                   @endforeach
                 </ul>
               </div>
