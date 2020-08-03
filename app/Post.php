@@ -39,16 +39,22 @@ class Post extends Model
 
     }
 
-    public function scopeFilter($query, $ar)
+    public function scopeFilter($query, $filters)
     {
-      if($month = $ar['month'])
+      if($month = @$filters['month'])
       {
           $query->whereMonth('created_at', Carbon::parse($month)->month);
       }
 
-      if($year = $ar['year'])
+      if($year = @$filters['year'])
       {
           $query->whereYear('created_at', Carbon::parse($year)->year);
       }
+    }
+
+    public static function archives()
+    {
+
+      return static::selectRaw('year(created_at) as year, monthname(created_at) as month, count(*) as published')->groupBy('year','month')->orderByRaw('min(created_at) desc')->get();
     }
 }

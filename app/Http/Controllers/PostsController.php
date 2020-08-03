@@ -23,10 +23,7 @@ class PostsController extends Controller
         // $posts = Post::orderBy('created_at', 'desc')->simplePaginate(10);
         $posts = Post::latest()->filter(request(['month','year']))->get();
 
-
-
-        $archives = Post::selectRaw('year(created_at) as year, monthname(created_at) as month, count(*) as published')->groupBy('year','month')->orderByRaw('min(created_at) desc')->get();
-        return view('home',compact(['posts','archives']));
+        return view('home',compact(['posts']));
     }
 
     /**
