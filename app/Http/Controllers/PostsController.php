@@ -7,8 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Support\Facades\Storage;
 
-use Carbon\Carbon;
-
 class PostsController extends Controller
 {
     public function __construct()
@@ -23,20 +21,9 @@ class PostsController extends Controller
     public function index()
     {
         // $posts = Post::orderBy('created_at', 'desc')->simplePaginate(10);
-        $posts = Post::latest();
-        // $posts = Post::latest()->simplePaginate(5);
+        $posts = Post::latest()->filter(request(['month','year']))->get();
 
-        if($month = request('month'))
-        {
-            $posts->whereMonth('created_at', Carbon::parse($month)->month);
-        }
 
-        if($year = request('year'))
-        {
-            $posts->whereYear('created_at', Carbon::parse($year)->year);
-        }
-
-        $posts = $posts->get();
 
         $archives = Post::selectRaw('year(created_at) as year, monthname(created_at) as month, count(*) as published')->groupBy('year','month')->orderByRaw('min(created_at) desc')->get();
         return view('home',compact(['posts','archives']));
